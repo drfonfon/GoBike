@@ -3,43 +3,51 @@ package me.kondachok.gobike
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import me.kondachok.gobike.location.DefaultLocationProvider
 import me.kondachok.gobike.ui.theme.GoBikeTheme
+import timber.log.Timber
+import timber.log.Timber.*
+
 
 class MainActivity : ComponentActivity() {
+
+    private val locationProvider by lazy { DefaultLocationProvider(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
+        Timber.plant(DebugTree())
         super.onCreate(savedInstanceState)
         setContent {
             GoBikeTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android")
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val location by locationProvider.location.collectAsState()
+                    if (location != null) {
+                        Text(text = "Current location: la: ${location!!.latitude}, lo: ${location!!.longitude}")
+                    } else {
+                        Text(text = "No location")
+                    }
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+    override fun onStart() {
+        super.onStart()
+        locationProvider.start()
+    }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GoBikeTheme {
-        Greeting("Android")
+    override fun onStop() {
+        super.onStop()
+        locationProvider.stop()
     }
 }

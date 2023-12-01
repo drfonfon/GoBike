@@ -47,8 +47,12 @@ android {
 }
 
 dependencies {
-
+    // Для Splash скрина
     implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
+
+    // Для логов
+    implementation("com.jakewharton.timber:timber:5.0.1")
+
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
