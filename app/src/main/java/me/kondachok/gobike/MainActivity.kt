@@ -1,30 +1,26 @@
 package me.kondachok.gobike
 
+import android.location.Location
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
-import me.kondachok.gobike.location.DefaultLocationProvider
+import me.kondachok.gobike.location.LocationProvider
 import me.kondachok.gobike.ui.theme.GoBikeTheme
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : ComponentActivity() {
 
-    private val locationProvider by lazy { DefaultLocationProvider(this) }
+    private val locationProvider: LocationProvider by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -35,27 +31,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val location by locationProvider.location.collectAsState()
-                    Column {
-                        if (location != null) {
-                            val singapore = LatLng(location!!.latitude, location!!.longitude)
-                            val cameraPositionState = rememberCameraPositionState {
-                                position = CameraPosition.fromLatLngZoom(singapore, 10f)
-                            }
-                            GoogleMap(
-                                modifier = Modifier.fillMaxSize(),
-                                cameraPositionState = cameraPositionState
-                            ) {
-                                Marker(
-                                    state = MarkerState(position = singapore),
-                                    title = "Singapore",
-                                    snippet = "Marker in Singapore"
-                                )
-                            }
-                        } else {
-                            Text(text = "No location")
-                        }
-                    }
-
+                    MainApp(location)
                 }
             }
         }
@@ -69,5 +45,14 @@ class MainActivity : ComponentActivity() {
     override fun onStop() {
         super.onStop()
         locationProvider.stop()
+    }
+}
+
+@Composable
+fun MainApp(location: Location?) {
+    if (location != null) {
+        Text("Location: la ${location.latitude}, lo ${location.longitude}")
+    } else {
+        Text("No location")
     }
 }
