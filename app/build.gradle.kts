@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
@@ -36,7 +37,7 @@ android {
     }
     buildFeatures {
         compose = true
-        viewBinding = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -63,6 +64,10 @@ dependencies {
     implementation(platform("io.insert-koin:koin-bom:3.5.1"))
     implementation("io.insert-koin:koin-android")
     implementation("io.insert-koin:koin-core-coroutines")
+    implementation("io.insert-koin:koin-androidx-compose")
+
+    // navigation
+    implementation("com.github.terrakok:modo-compose:0.8.0-dev1")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -73,7 +78,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-
+    implementation("androidx.compose.animation:animation-android:1.5.4")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

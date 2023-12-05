@@ -1,0 +1,4 @@
+<resources>
+    <!-- Экран настроек  -->
+    <string name="settings_app_version">Версия приложения</string>
+</resources>

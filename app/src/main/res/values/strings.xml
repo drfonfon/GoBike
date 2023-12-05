@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">GoBike</string>
+    <string translatable="false" name="app_name">GoBike</string>
+
+    <!-- Экран настроек  -->
+    <string name="settings_app_version">Application version</string>
 </resources>

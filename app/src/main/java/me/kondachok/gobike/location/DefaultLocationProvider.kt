@@ -13,7 +13,7 @@ import me.kondachok.gobike.utils.locationManager
 import me.kondachok.gobike.utils.setType
 import timber.log.Timber
 
-class DefaultLocationProvider constructor(private val context: Context) : LocationProvider {
+class DefaultLocationProvider(private val context: Context) : LocationProvider {
 
     private val timber = Timber.tag(TAG_LOCATION)
 
@@ -39,7 +39,7 @@ class DefaultLocationProvider constructor(private val context: Context) : Locati
     }
 
     @SuppressLint("MissingPermission")
-    override fun start() {
+    override fun start(args: Unit) {
         manager.removeUpdates(locationListener)
         if (!context.isLocationPermissionsGranted) {
             clear()
