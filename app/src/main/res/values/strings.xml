@@ -3,4 +3,7 @@
 
     <!-- Экран настроек  -->
     <string name="settings_app_version">Application version</string>
+
+    <!--Значения-->
+    <string name="value_speed">Speeed</string>
 </resources>

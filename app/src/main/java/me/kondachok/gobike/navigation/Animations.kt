@@ -14,7 +14,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.github.terrakok.modo.ComposeRendererScope
@@ -31,13 +31,13 @@ fun ComposeRendererScope<StackState>.SlideTransition() {
         transitionSpec = {
             val transitionType = calculateStackTransitionType(oldState, newState)
             if (transitionType == StackTransitionType.Replace) {
-                scaleIn(initialScale = 2f) + fadeIn() with fadeOut()
+                (scaleIn(initialScale = 2f) + fadeIn()).togetherWith(fadeOut())
             } else {
                 val (initialOffset, targetOffset) = when (transitionType) {
                     StackTransitionType.Pop -> ({ size: Int -> -size }) to ({ size: Int -> size })
                     else -> ({ size: Int -> size }) to ({ size: Int -> -size })
                 }
-                slideInHorizontally(initialOffsetX = initialOffset) with
+                slideInHorizontally(initialOffsetX = initialOffset) togetherWith
                         slideOutHorizontally(targetOffsetX = targetOffset)
             }
         }
@@ -48,9 +48,13 @@ fun ComposeRendererScope<StackState>.SlideTransition() {
 fun ComposeRendererScope<*>.ScreenTransition(
     modifier: Modifier = Modifier,
     transitionSpec: AnimatedContentTransitionScope<Screen>.() -> ContentTransform = {
-        fadeIn(animationSpec = tween(220, delayMillis = 90)) +
-                scaleIn(initialScale = 0.92f, animationSpec = tween(220, delayMillis = 90)) with
-                fadeOut(animationSpec = tween(90))
+        (fadeIn(animationSpec = tween(220, delayMillis = 90)) +
+                scaleIn(
+                    initialScale = 0.92f,
+                    animationSpec = tween(220, delayMillis = 90)
+                )).togetherWith(
+            fadeOut(animationSpec = tween(90))
+        )
     },
     content: @Composable AnimatedVisibilityScope.(Screen) -> Unit = { it.SaveableContent() }
 ) {

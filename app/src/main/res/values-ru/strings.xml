@@ -1,4 +1,7 @@
 <resources>
     <!-- Экран настроек  -->
     <string name="settings_app_version">Версия приложения</string>
+
+    <!--Значения-->
+    <string name="value_speed">Скорость</string>
 </resources>
