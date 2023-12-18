@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package me.kondachok.gobike.ui.main
 
 import androidx.compose.foundation.layout.Arrangement
@@ -7,6 +9,7 @@ import androidx.compose.foundation.lazy.grid.GridCells.Fixed
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,6 +58,7 @@ fun MainScreenContent(locationProvider: LocationProvider = koinInject()) {
     val stack = LocalContainerScreen.current as StackScreen
     val coroutineScope = rememberCoroutineScope()
     MainGreed(
+        modifier = Modifier,
         listOf(
             SpeedWidget(0),
             EmptyWidget(1)
@@ -67,14 +71,18 @@ fun MainScreenContent(locationProvider: LocationProvider = koinInject()) {
 }
 
 @Composable
-fun MainGreed(widgetList: List<Widget>, providers: Map<String, ValueProvider>) {
+fun MainGreed(
+    modifier: Modifier = Modifier,
+    widgetList: List<Widget>,
+    providers: Map<String, ValueProvider>
+) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     val widgets by remember { mutableStateOf(widgetList) }
     LazyVerticalGrid(
         columns = Fixed(3),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .onSizeChanged { size = it }
     ) {

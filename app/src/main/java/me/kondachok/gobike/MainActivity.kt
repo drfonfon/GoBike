@@ -14,7 +14,7 @@ import com.github.terrakok.modo.stack.StackScreen
 import me.kondachok.gobike.location.AnyLifecycle
 import me.kondachok.gobike.location.start
 import me.kondachok.gobike.navigation.MainStack
-import me.kondachok.gobike.ui.main.MainScreen
+import me.kondachok.gobike.ui.tabs.MainMultiScreen
 import me.kondachok.gobike.ui.theme.GoBikeTheme
 import org.koin.android.ext.android.inject
 
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         rootScreen = Modo.init(savedInstanceState, rootScreen) {
-            MainStack(MainScreen())
+            MainStack(MainMultiScreen())
         }
         setContent {
             GoBikeTheme {
